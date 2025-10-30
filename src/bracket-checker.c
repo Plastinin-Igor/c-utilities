@@ -1,4 +1,7 @@
 #include <stdio.h>
+#define IN  1
+#define OUT 0
+
  int tos; /*Top of the stack*/
 
 /*Push an element onto a stack*/
@@ -34,28 +37,64 @@ int is_matching_pair(char open, char close) {
            (open == '[' && close == ']');
 }
 
+void print_error_heade(int line, int column) {
+    printf("\n[ERROR] Line %d, column %d:\n", line, column);
+}
+
+void print_success() {
+    printf("\n[OK] All brackets are properly balanced!\n");
+}
+
+int is_state(int c) {
+    int state = OUT;
+    if (c == '\'' ) {
+        return -1; // TODO
+    } else return 0;
+}
+
+char get_pair(char bracket) {
+  switch(bracket) {
+      case '(': return ')';
+      case ')': return '(';
+      case '{': return '}';
+      case '}': return '{';
+      case '[': return ']';
+      case ']': return '[';
+      default: return bracket;
+  }
+}
+
 int main () {
     int c;
     int line;
+    int column;
     int stack_size;
     stack_size = 1000;
     char stck[stack_size + 1]; /*Stack array*/
     tos = -1; /*Initialization of the top of the stack*/
 
     line = 1;
+    column = 1;
     while((c = getchar()) != EOF) {
-        if (c == '\n')
+        ++column;
+        if (c == '\n') {
             ++line;
+            column = 0;
+        }
         if (c == '(' || c == '{' || c == '[') {
             push(stack_size, c, stck);
         } else if (c == ')' || c == '}' || c == ']' ) {
             if (is_empty()) {
-                printf("Error: Opening element not found for element \"%c\" on line %d\n", c, line);
+                print_error_heade(line, column);
+                printf("    Unmatched closing \"%c\"\n", c);
+                printf("    -> No opening \"%c\" found\n", get_pair(c));
                 return -1;
             } else {
                 char opened = pop(stck);
                 if (!is_matching_pair(opened, c)) {
-                    printf("Error: The closing element \"%c\" on the line #%d does not match the opening one.\n", c, line);
+                    print_error_heade(line, column);
+                    printf("    Mismatch of elements:\n");
+                    printf("    -> Found \"%c\", but expected  %c\n", c, opened);
                     return -1;
                 }
             }
@@ -63,13 +102,13 @@ int main () {
     }
 
     if (!is_empty()) {
-        printf("There are unclosed elements:\n");
+        printf("\n[ERROR] Unclosed brackets found:\n\n");
         for(int i = 0; i <= tos; i++) {
             printf("    Open element has no pair: %c\n", stck[i]);
         }
         return -1;
     }
 
-    printf("The test was completed successfully.");
+    print_success();
     return 0;
 }

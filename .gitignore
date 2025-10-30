@@ -2,6 +2,7 @@
 *.a
 *.exe
 a.out
+*.ora
 
 build/
 .deps/
