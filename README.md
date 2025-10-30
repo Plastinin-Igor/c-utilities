@@ -1,7 +1,6 @@
-![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
-# Утилиты на языке C
+# Утилиты на языке ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 
-## bracket-checker.c
+[bracket-checker.c] (https://github.com/Plastinin-Igor/c-utilities/blob/main/src/bracket-checker.c)
 Анализатор скобок, который проверяет корректность расстановки круглых, фигурных и квадратных скобок. 
 Программа игнорирует скобки внутри строковых литералов, символьных констант и комментариев.
 
